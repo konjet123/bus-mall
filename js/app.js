@@ -4,6 +4,7 @@
 Product.allProducts = [];
 var lastVisited = [1,2,3];
 
+
 // create objects for our Products
 function Product(name, filepath) {
   this.name = name;
@@ -164,12 +165,12 @@ function validateMaximumClicks() {
   var maximumClicksAllowed = 25;
   var totalCounts = 0;
   var ProductLists = [];
+  var ProductClicks = [];
   for(var i = 0; i < Product.allProducts.length; i++) {
     totalCounts = totalCounts + Product.allProducts[i].receivedClicks;
-
-    if(Product.allProducts[i].receivedClicks>0) {
-      ProductLists.push(Product.allProducts[i]);
-    }
+   
+    ProductLists[i]=Product.allProducts[i].name;
+    ProductClicks[i]=Product.allProducts[i].receivedClicks;
 
 
     if(totalCounts>=maximumClicksAllowed) {
@@ -178,11 +179,26 @@ function validateMaximumClicks() {
       imgContainer2.removeEventListener('click', randomProduct2);
       console.log('Maximum clicked reached to 25');
       alert('Maximum clicked reached to 25');
-      for(var j = 0; i < ProductLists.length; j++) {
-        console.log('Product Name: ' + ProductLists[j].name + ' Clicks Received : ' + ProductLists[j].receivedClicks);
+      for(var j = 0;  j< ProductLists.length; j++) {
+        console.log('Product Name: ' + ProductLists[j].name + ' Clicks Received : ' + ProductClicks[j].receivedClicks);
       }
+      var canvas = document.getElementById('chart');
+      var ctx = canvas.getContext('2d');
+      var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ProductLists,
+            datasets: [{
+                label: 'Votes for My Fav Things',
+                data: ProductClicks,
+                backgroundColor: ['#000000', '#444444', '#888888', '#f3f3f3']
+            }]
+        },
+        options: {}
+    });
       break;
     }
 
   }
+
 }
